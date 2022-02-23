@@ -1,0 +1,44 @@
+# baekjoon 1339 단어 수학
+
+import sys 
+input = sys.stdin.readline
+
+# 알파벳열의 개수를 입력 받음 
+N = int(input())
+# 알파벳열을 입력 받음 
+words = [input().rstrip() for _ in range(N)]
+
+# 사전폼 생성
+dict = {}
+
+# 알파벳열만큼 반복문 시작
+for word in words:
+    # 재곱승은 알파벳을 길이 - 1
+    cnt = len(word) - 1
+    # 알파벳열 안에 있는 알파벳 만큼 반복문시작
+    for i in word:
+        # 알파벳이 딕셔너리에 없는 경우 cnt만큼 10의 제곱승을 넣어줌 
+        if i not in dict:
+            dict[i] = pow(10, cnt)
+        # 알파벳이 딕셔너리에 있는 경우 cnt만큼 10의 제곱승을 기존에 숫자에 더해줌
+        else:
+            dict[i] += pow(10, cnt)
+        # 알파벳이 줄어들수록 제곱승도 줄어듬
+        cnt -= 1
+
+# 숫자가 높은 것 부터 오는 내림차순 수열로 저장 
+dict = sorted(dict.values(), reverse=True)
+
+# 결과값의 초기화
+result = 0
+# 저장된 수는 9부터 곱해줌
+num = 9 
+
+# 제곱승으로 만든 숫자중 높은것 순서대로 num 과 곱해주고 결과 값에 더해줌 
+for i in dict:
+    result += i * num
+    # 반복문을 반복할때마다 9에서 1씩 빼줌 
+    num -= 1
+
+# 결과 출력
+print(result)
