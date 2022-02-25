@@ -1,0 +1,45 @@
+#그리디 알고리즘 baekjoon 14888 연산자 끼워넣기
+ 
+import sys 
+from itertools import permutations 
+input = sys.stdin.readline
+# 수의 개수를 입력
+N = int(input())
+# 수를 입력
+data = list(map(int, input().split()))
+# 수의 연산자의 종류를 입력 +, - , *, / 순으로
+four_rules = list(map(int, input().split()))
+# 각 index에 따른 +, - , *, / 를 입력해줌
+rules_list = ["+", "-", "*", "/"]
+# 인덱스에 따라서 연산자를 rules에 추가해줌
+rules = []
+for i in range(len(four_rules)):
+    for j in range(four_rules[i]):
+        rules.append(rules_list[i])
+
+
+# 최대값의 초기화 -10억, 최소값의 초기화 +10억
+maximum = -1e9
+minimum = 1e9
+
+# 그리디 알고리즘 실행
+def greedy():
+    # 최소값과 최대값을 변환할 수 있도록 global 을 써줌
+    global maximum, minimum
+    # permutations를 사용해서 가능한 모든 연산자 순열을 통해서 최소값과 최대 값을 구해줌 
+    for case in permutations(rules, N-1):
+        # 첫번째 숫자를 더해서 연산을 진행
+        tnt = data[0]
+        # 연산기호에 따른 더하기, 빼기, 곱하기, 나누기를 진행
+        for i in range(1, N):
+            if case[i-1] == "+":
+                tnt += data[i]
+            elif case[i-1] == "-":
+                tnt -= data[i]
+            elif case[i-1] == "*":
+                tnt *= data[i]
+            elif case[i-1] == "/":
+                tnt = int(tnt/data[i])
+        # 연산이 끝났으면 max 와 min을 통해서 최대값과 최소값을 구해줌
+        maximum = max(tnt, maximum)
+        minimum = min(tnt, minimum)
